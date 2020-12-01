@@ -78,3 +78,50 @@ ALTER SYSTEM SET wal_level = logical;
 ```
 
 Restart postgres instance.
+
+
+### 3. Apache Kafka docker image
+
+ - Go to [Docker Kafka](./Docker_Kafka)  
+ - Run below command 
+```sh 
+$ docker-compose up -d 
+```
+
+### 4. Debezium source connector Setup
+
+We need to install debezium source connector
+
+```sh
+$ docker run -it --rm --name connect --network taskmanager-network -p 8083:8083 -e GROUP_ID=1 -e CONFIG_STORAGE_TOPIC=my_connect_configs -e OFFSET_STORAGE_TOPIC=my_connect_offsets -e STATUS_STORAGE_TOPIC=my_connect_statuses -e BOOTSTRAP_SERVERS=kafka:9092 --link zookeeper:zookeeper --link kafka:kafka --link task_postgres:postgres debezium/connect:1.3
+
+```
+
+### 5. Configure PostGres Source Connector
+
+``` sh
+curl --location --request POST 'http://localhost:8083/connectors' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "name": "task_manager-connector",  
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector", 
+    "database.hostname": "postgres", 
+    "database.port": "5432", 
+    "database.user": "postgres", 
+    "database.password": "admin", 
+    "database.dbname" : "task_manager", 
+    "database.server.name": "task_manager", 
+    "slot.name" : "public_task_manager_slot",
+    "plugin.name": "pgoutput"
+
+  }
+}'
+```
+
+### 6. Create task progress status kafka topic
+
+```sh
+$ bin/kafka-topics.sh --create --topic updated_task_progress --bootstrap-server localhost:9092
+
+```
