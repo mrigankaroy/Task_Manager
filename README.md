@@ -125,3 +125,25 @@ curl --location --request POST 'http://localhost:8083/connectors' \
 $ bin/kafka-topics.sh --create --topic updated_task_progress --bootstrap-server localhost:9092
 
 ```
+
+## Start TaskService and TaskEngine
+
+### 1. TaskService
+
+TaskService provide REST endpoint to manager all tasks
+
+ - Go to [TaskService](./TaskService)  
+ - Run below command 
+```sh 
+$ mvn spring-boot:run 
+```
+
+### 2. TaskEngine
+
+TaskEngine is responsible to manage task progress. 
+
+ - Go to [TaskEngine](./TaskEngine)  
+ - Run below command 
+```sh 
+$ mvn spring-boot:run 
+```
