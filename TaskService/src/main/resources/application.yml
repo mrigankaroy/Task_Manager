@@ -1,0 +1,31 @@
+server:
+  port: 5092
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/task_manager
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: admin
+    hikari:
+      connectionTimeout: 20000
+      maximumPoolSize: 5
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+
+task-progress-stream:
+  stream:
+    output-stream: updated_task_progress
+
+task-stream:
+  kafka:
+    bootstrap-server: localhost:9093
+    group-id: task_service_group
+

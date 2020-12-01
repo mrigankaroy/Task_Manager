@@ -1,0 +1,20 @@
+server:
+  port: 7094
+
+task-stream:
+  kafka:
+    bootstrap-server: localhost:9093
+    application-id: task-stream
+    stream:
+      input-stream: task_manager.public.task
+      # output-stream: test_connector_event
+
+task-progress-stream:
+  stream:
+    output-stream: updated_task_progress
+
+
+task-redisson:
+  conf-file: redisson-config.yaml
+  executor-name: task_executor_1
+
