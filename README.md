@@ -147,3 +147,13 @@ TaskEngine is responsible to manage task progress.
 ```sh 
 $ mvn spring-boot:run 
 ```
+
+## Testing
+
+| API | Request Body | Response |
+| ------ | ------ |--------|
+| POST- /api/generate | ``` {"goal":"10","step":"2"} ``` | 202 ACCEPTED ``` {"task":"UUID of the task"} ``` |
+| GET - /api/tasks/{UUID of the task}/status  |   |  ``` {"result":"SUCCESS/IN_PROGRESS/ERROR"} ``` |
+| GET - /api/tasks/{Task UUID of the task}?action=get_numlist  |   |  ``` {"result":"10,8,6,4,2,0"} ``` |
+| POST - /api/bulkGenerate  |  ``` [{"goal":"10","step":"2"},{"goal":"100","step":"3"}] ``` |  202 ACCEPTED ``` {"task":"UUID of the task"} ``` |
+| GET - /api/tasks/{Task UUID of the task}?action=get_numlist  |   |  ``` {"results":["10,8,6,4,2,0","100,97,...."]} ``` |
